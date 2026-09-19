@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Enefal Shop</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    font-family:Arial,Helvetica,sans-serif;
+    background:#f7f7f5;
+    color:#111;
+}
+
+header{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    z-index:1000;
+    padding:20px 6%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    transition:.4s;
+}
+
+header.scrolled{
+    background:rgba(255,255,255,.9);
+    backdrop-filter:blur(15px);
+    box-shadow:0 5px 25px rgba(0,0,0,.08);
+    padding:14px 6%;
+}
+
+.logo{
+    font-size:25px;
+    font-weight:800;
+    letter-spacing:-1px;
+}
+
+nav{
+    display:flex;
+    gap:30px;
+}
+
+nav a{
+    text-decoration:none;
+    color:#111;
+    font-size:14px;
+}
+
+.cart-btn{
+    border:0;
+    background:#111;
+    color:#fff;
+    padding:11px 17px;
+    border-radius:30px;
+    cursor:pointer;
+}
+
+.hero{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    padding:120px 6% 60px;
+    background:#e9e8e3;
+    overflow:hidden;
+}
+
+.hero-content{
+    width:50%;
+    z-index:2;
+    animation:fadeUp 1s ease;
+}
+
+.hero h1{
+    font-size:clamp(55px,8vw,110px);
+    line-height:.9;
+    letter-spacing:-6px;
+    margin-bottom:30px;
+}
+
+.hero p{
+    font-size:18px;
+    max-width:450px;
+    line-height:1.6;
+    color:#555;
+    margin-bottom:35px;
+}
+
+.btn{
+    display:inline-block;
+    background:#111;
+    color:#fff;
+    text-decoration:none;
+    padding:17px 28px;
+    border-radius:40px;
+    transition:.3s;
+}
+
+.btn:hover{
+    transform:translateY(-3px);
+}
+
+.hero-image{
+    width:50%;
+    height:75vh;
+    border-radius:30px;
+    overflow:hidden;
+    animation:zoomIn 1.2s ease;
+}
+
+.hero-image img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    transition:1s;
+}
+
+.hero-image:hover img{
+    transform:scale(1.05);
+}
+
+section{
+    padding:110px 6%;
+}
+
+.section-title{
+    font-size:48px;
+    letter-spacing:-2px;
+    margin-bottom:50px;
+}
+
+.products{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:25px;
+}
+
+.product{
+    opacity:0;
+    transform:translateY(50px);
+    transition:1s;
+}
+
+.product.show{
+    opacity:1;
+    transform:translateY(0);
+}
+
+.product-image{
+    height:450px;
+    border-radius:20px;
+    overflow:hidden;
+    background:#ddd;
+}
+
+.product-image img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    transition:.6s;
+}
+
+.product:hover img{
+    transform:scale(1.06);
+}
+
+.product-info{
+    padding:18px 4px;
+    display:flex;
+    justify-content:space-between;
+}
+
+.product-name{
+    font-size:17px;
+}
+
+.price{
+    font-weight:bold;
+}
+
+.story{
+    background:#111;
+    color:#fff;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:70px;
+    align-items:center;
+}
+
+.story-image{
+    height:600px;
+    border-radius:25px;
+    overflow:hidden;
+}
+
+.story-image img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.story-text h2{
+    font-size:60px;
+    letter-spacing:-3px;
+    margin-bottom:25px;
+}
+
+.story-text p{
+    color:#aaa;
+    line-height:1.8;
+    font-size:17px;
+    max-width:500px;
+}
+
+.categories{
+    display:flex;
+    gap:15px;
+    overflow-x:auto;
+    padding-bottom:15px;
+}
+
+.category{
+    flex:0 0 auto;
+    padding:16px 25px;
+    border:1px solid #ccc;
+    border-radius:40px;
+}
+
+.benefits{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:20px;
+}
+
+.benefit{
+    padding:35px;
+    background:#fff;
+    border-radius:20px;
+}
+
+.benefit h3{
+    margin-bottom:15px;
+    font-size:21px;
+}
+
+.benefit p{
+    color:#666;
+    line-height:1.6;
+}
+
+.newsletter{
+    text-align:center;
+    background:#e7e5df;
+}
+
+.newsletter h2{
+    font-size:55px;
+    letter-spacing:-3px;
+    margin-bottom:20px;
+}
+
+.newsletter p{
+    color:#666;
+    margin-bottom:30px;
+}
+
+footer{
+    background:#111;
+    color:#fff;
+    padding:60px 6%;
+    display:flex;
+    justify-content:space-between;
+}
+
+footer p{
+    color:#999;
+}
+
+.cart{
+    position:fixed;
+    right:-420px;
+    top:0;
+    width:400px;
+    max-width:90%;
+    height:100vh;
+    background:#fff;
+    z-index:2000;
+    padding:30px;
+    box-shadow:-10px 0 40px rgba(0,0,0,.15);
+    transition:.5s;
+}
+
+.cart.open{
+    right:0;
+}
+
+.cart-close{
+    float:right;
+    border:0;
+    background:none;
+    font-size:25px;
+    cursor:pointer;
+}
+
+.cart h2{
+    margin:50px 0 30px;
+}
+
+.cart-item{
+    display:flex;
+    justify-content:space-between;
+    padding:15px 0;
+    border-bottom:1px solid #eee;
+}
+
+.checkout{
+    width:100%;
+    margin-top:30px;
+    padding:17px;
+    border:0;
+    border-radius:30px;
+    background:#111;
+    color:#fff;
+    cursor:pointer;
+}
+
+.toast{
+    position:fixed;
+    bottom:25px;
+    left:50%;
+    transform:translateX(-50%) translateY(100px);
+    background:#111;
+    color:#fff;
+    padding:15px 25px;
+    border-radius:30px;
+    transition:.4s;
+    z-index:3000;
+}
+
+.toast.show{
+    transform:translateX(-50%) translateY(0);
+}
+
+@keyframes fadeUp{
+    from{
+        opacity:0;
+        transform:translateY(40px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+@keyframes zoomIn{
+    from{
+        opacity:0;
+        transform:scale(1.05);
+    }
+    to{
+        opacity:1;
+        transform:scale(1);
+    }
+}
+
+@media(max-width:800px){
+
+    nav{
+        display:none;
+    }
+
+    .hero{
+        flex-direction:column;
+        padding-top:120px;
+    }
+
+    .hero-content,
+    .hero-image{
+        width:100%;
+    }
+
+    .hero-content{
+        margin-bottom:40px;
+    }
+
+    .hero h1{
+        font-size:65px;
+        letter-spacing:-4px;
+    }
+
+    .hero-image{
+        height:55vh;
+    }
+
+    .products{
+        grid-template-columns:1fr;
+    }
+
+    .product-image{
+        height:500px;
+    }
+
+    .story{
+        grid-template-columns:1fr;
+    }
+
+    .story-image{
+        height:450px;
+    }
+
+    .story-text h2{
+        font-size:45px;
+    }
+
+    .benefits{
+        grid-template-columns:1fr;
+    }
+
+    .newsletter h2{
+        font-size:42px;
+    }
+
+    footer{
+        flex-direction:column;
+        gap:20px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header id="header">
+    <div class="logo">ENEFAL</div>
+
+    <nav>
+        <a href="#shop">Shop</a>
+        <a href="#story">About</a>
+        <a href="#categories">Categories</a>
+    </nav>
+
+    <button class="cart-btn" onclick="openCart()">
+        Cart <span id="cartCount">0</span>
+    </button>
+</header>
+
+<section class="hero">
+
+    <div class="hero-content">
+        <h1>ENEFAL<br>SHOP</h1>
+
+        <p>
+            Современная одежда для тех,
+            кто ценит стиль, качество
+            и простоту.
+        </p>
+
+        <a href="#shop" class="btn">
+            Смотреть коллекцию
+        </a>
+    </div>
+
+    <div class="hero-image">
+        <img src="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=1200&q=85">
+    </div>
+
+</section>
+
+<section id="shop">
+
+    <h2 class="section-title">New Collection</h2>
+
+    <div class="products">
+
+        <div class="product">
+            <div class="product-image">
+                <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=900&q=85">
+            </div>
+            <div class="product-info">
+                <span class="product-name">Essential T-Shirt</span>
+                <span class="price">4 990 ₽</span>
+            </div>
+        </div>
+
+        <div class="product">
+            <div class="product-image">
+                <img src="https://images.unsplash.com/photo-1551488831-00ddcb6c6bd3?auto=format&fit=crop&w=900&q=85">
+            </div>
+            <div class="product-info">
+                <span class="product-name">Oversize Jacket</span>
+                <span class="price">12 990 ₽</span>
+            </div>
+        </div>
+
+        <div class="product">
+            <div class="product-image">
+                <img src="https://images.unsplash.com/photo-1506629905607-d9b1c8e2a1d4?auto=format&fit=crop&w=900&q=85">
+            </div>
+            <div class="product-info">
+                <span class="product-name">Classic Shirt</span>
+                <span class="price">7 990 ₽</span>
+            </div>
+        </div>
+
+    </div>
+
+</section>
+
+<section id="categories">
+
+    <h2 class="section-title">Categories</h2>
+
+    <div class="categories">
+        <div class="category">T-Shirts</div>
+        <div class="category">Shirts</div>
+        <div class="category">Jackets</div>
+        <div class="category">Pants</div>
+        <div class="category">Accessories</div>
+    </div>
+
+</section>
+
+<section class="story" id="story">
+
+    <div class="story-image">
+        <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=1200&q=85">
+    </div>
+
+    <div class="story-text">
+        <h2>Less noise.<br>More style.</h2>
+
+        <p>
+            Enefal Shop создан вокруг простой идеи:
+            хорошая одежда не должна кричать о себе.
+            Чистые формы, современные силуэты
+            и вещи, которые легко становятся частью
+            твоего гардероба.
+        </p>
+    </div>
+
+</section>
+
+<section>
+
+    <h2 class="section-title">Why Enefal?</h2>
+
+    <div class="benefits">
+
+        <div class="benefit">
+            <h3>01 — Quality</h3>
+            <p>
+                Внимание к материалам,
+                посадке и деталям.
+            </p>
+        </div>
+
+        <div class="benefit">
+            <h3>02 — Style</h3>
+            <p>
+                Минималистичный дизайн,
+                который не выходит из моды.
+            </p>
+        </div>
+
+        <div class="benefit">
+            <h3>03 — Comfort</h3>
+            <p>
+                Одежда, которую хочется
+                носить каждый день.
+            </p>
+        </div>
+
+    </div>
+
+</section>
+
+<section class="newsletter">
+
+    <h2>Stay in the loop.</h2>
+
+    <p>
+        Новые коллекции и специальные предложения.
+    </p>
+
+    <a href="#" class="btn">
+        Подписаться
+    </a>
+
+</section>
+
+<footer>
+
+    <div>
+        <strong>ENEFAL SHOP</strong>
+        <p>Modern clothing store</p>
+    </div>
+
+    <p>© 2026 Enefal Shop</p>
+
+</footer>
+
+<div class="cart" id="cart">
+
+    <button class="cart-close" onclick="closeCart()">×</button>
+
+    <h2>Your Cart</h2>
+
+    <div id="cartItems">
+        <p style="color:#777">
+            Корзина пока пуста.
+        </p>
+    </div>
+
+    <button class="checkout" onclick="checkout()">
+        Оформить заказ
+    </button>
+
+</div>
+
+<div class="toast" id="toast">
+    Товар добавлен в корзину
+</div>
+
+<script>
+
+window.addEventListener("scroll",function(){
+
+    const header=document.getElementById("header");
+
+    if(window.scrollY>50){
+        header.classList.add("scrolled");
+    }else{
+        header.classList.remove("scrolled");
+    }
+
+});
+
+const products=document.querySelectorAll(".product");
+
+const observer=new IntersectionObserver((entries)=>{
+
+    entries.forEach((entry,index)=>{
+
+        if(entry.isIntersecting){
+
+            setTimeout(()=>{
+                entry.target.classList.add("show");
+            },index*150);
+
+        }
+
+    });
+
+},{threshold:.15});
+
+products.forEach(product=>{
+    observer.observe(product);
+});
+
+let cartCount=0;
+
+function openCart(){
+    document.getElementById("cart").classList.add("open");
+}
+
+function closeCart(){
+    document.getElementById("cart").classList.remove("open");
+}
+
+function checkout(){
+
+    if(cartCount===0){
+
+        showToast("Сначала добавь товар в корзину");
+
+        return;
+    }
+
+    showToast("Оформление заказа скоро будет доступно");
+}
+
+function showToast(text){
+
+    const toast=document.getElementById("toast");
+
+    toast.textContent=text;
+
+    toast.classList.add("show");
+
+    setTimeout(()=>{
+        toast.classList.remove("show");
+    },2500);
+
+}
+
+</script>
+
+</body>
+</html>
